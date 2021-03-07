@@ -1,0 +1,13 @@
+mysql> drop table if exists stu_test;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+mysql> create table stu_test(
+ -> ID INT,
+ -> NAME VARCHAR(10),
+ -> password VARCHAR(10),
+ -> age INT,
+ -> sex VARCHAR(1),
+ -> birthday timestamp,
+ -> amout decimal(6,2),
+ -> resume TEXT
+ -> );
+Query OK, 0 rows affected (0.08 sec)
