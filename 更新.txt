@@ -1,0 +1,1 @@
+-- 将孙权的数学成绩，更新为99分。 mysql> select * from exam_result;
