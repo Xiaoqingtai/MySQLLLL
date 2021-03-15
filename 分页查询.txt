@@ -1,0 +1,1 @@
+语法：select * from exam_result limit s,n; 从偏移位置 为s的地方，取出n条数据
