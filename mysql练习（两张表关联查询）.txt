@@ -1,0 +1,89 @@
+查询所有员工信息，信息内容包括
+员工主键，员工姓名，性别，年龄，工资，所属部门名称
+查询出工资最高的员工，并显示员工信息 自查询 查询出最高工资
+查询出每个部门工资最高的员工信息
+查询所有男性员工工资总和,平均工资,最高工资,最低工资
+查询工资大于平均工资的员工信息
+查询所有姓王员工的姓名和性别
+查询年龄最大的前3个员工的姓名和年龄
+统计每个部门的工资总和,显示信息：部门名称，工资总和
+首先用员工表与部门表关联.用部门分组
+统计每个部门的总人数,显示信息：部门名称，部门人数
+CREATE TABLE part(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	Dept_name VARCHAR(20),
+	Dept_Desc VARCHAR(20),
+	Dept_date DATE
+)
+INSERT INTO part(id,Dept_name,Dept_Desc,Dept_date)
+	    VALUES(1,'研发部','开发软件','2014-12-14'),
+		  (2,'财务部','发工资','2014-10-14'),
+		  (3,'市场部','销售软件','2015-11-02')
+CREATE TABLE people(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	NAME VARCHAR(20),
+	sex CHAR(1) CHECK(sex='男' OR sex = '女'),
+	age INT,
+	money INT,
+	Dept_id VARCHAR(20)
+)
+INSERT INTO people(NAME,sex,age,money,Dept_id)
+	    VALUES('王五','男',25,3000,1),
+	    ('李明','男',23,2500,1),
+	    ('王二小','男',23,2356,2),
+	    ('陈发','男',22,3600,2),
+	    ('小明','男',21,3100,3),
+	    ('苏奇','男',24,2800,3),
+	    ('王丽','女',19,1800,1),
+	    ('李芳','女',18,1900,3)
+-- 1.	查询所有员工信息，信息内容包括员工主键，员工姓名，性别，年龄，工资，所属部门名称
+SELECT *
+FROM people
+-- 2.	查询出工资最高的员工，并显示员工信息  自查询 查询出最高工资
+SELECT * 
+FROM people p1,(SELECT MAX(money) maxmoney
+FROM people) p2
+WHERE p1.money = p2.maxmoney
+
+-- 3.	查询出每个部门工资最高的员工信息
+SELECT * 
+FROM people p1,(SELECT Dept_id, MAX(money) maxmoney
+FROM people GROUP BY Dept_id) p2
+WHERE p1.money = p2.maxmoney AND p1.Dept_id = p2.Dept_id
+
+
+-- 4.	查询所有男性员工工资总和,平均工资,最高工资,最低工资
+SELECT SUM(money),AVG(money),MAX(money),MIN(money)
+FROM people
+WHERE id NOT IN (SELECT id
+          FROM people
+          WHERE sex='女')
+
+
+-- 5.	查询工资大于平均工资的员工信息
+SELECT *
+FROM people p1 ,(SELECT AVG(money) avgm
+FROM people) p2
+WHERE p1.money > p2.avgm
+
+-- 6.	查询所有姓王员工的姓名和性别
+SELECT NAME,sex
+FROM people
+WHERE NAME LIKE '王%'
+
+-- 7.	查询年龄最大的前3个员工的姓名和年龄
+SELECT *
+FROM people
+ORDER BY age DESC
+LIMIT 3
+
+-- 8.	统计每个部门的工资总和,显示信息：部门名称，工资总和 
+-- 首先用员工表与部门表关联.用部门分组
+SELECT Dept_name,工资总和
+FROM part t , (SELECT SUM(money) 工资总和,Dept_id FROM people GROUP BY Dept_id) p
+WHERE t.id = p.Dept_id
+
+-- 9.统计每个部门的总人数,显示信息：部门名称，部门人数
+SELECT Dept_name,人数
+FROM part t , (SELECT COUNT(id) 人数,Dept_id FROM people GROUP BY Dept_id) p
+WHERE t.id = p.Dept_id
