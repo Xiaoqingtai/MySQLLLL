@@ -1,0 +1,16 @@
+-- 1. 查询出每个学生最高成绩的科目(要求显示字段: 学号，姓名，课程，最高成绩)
+SELECT stud.stu_num,stud.stu_name,stud.subject,stu_score
+FROM(SELECT stu_num,MAX(stu_score) AS maxScore
+FROM stud
+GROUP BY stu_num) t2
+  JOIN stud
+    ON stud.stu_num = t2.stu_num
+    AND stud.stu_score = t2.maxScore
+-- 2. 查询各门课程成绩最好的学生(要求显示字段: 学号，姓名，科目，成绩) 
+SELECT stud.stu_num,stud.stu_name,stud.subject,stu_score
+FROM(SELECT SUBJECT,MAX(stu_score) AS maxScore
+  FROM stud
+  GROUP BY SUBJECT) t2
+  JOIN stud
+    ON stud.SUBJECT = t2.SUBJECT
+    AND stud.stu_score = t2.maxScore
