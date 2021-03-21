@@ -1,0 +1,28 @@
+select stu.sn,stu.name,sco.score,cou.name as 课程名
+ from student stu 
+inner join score sco on stu.id = sco.student_id 
+inner join course cou on sco.course_id = cou.id 
+and stu.id=4;
+
+或
+
+select stu.sn,stu.name,sco.score,cou.name as 课程名
+ from student stu 
+inner join score sco on stu.id = sco.student_id 
+inner join course cou on sco.course_id = cou.id 
+and stu.name='许仙';
+
+查询结果显示： 
+mysql> select stu.sn,stu.name,sco.score,cou.name as 课程名
+-> from student stu inner join score sco on stu.id = sco.student_id 
+-> inner join course cou on sco.course_id = cou.id
+-> and stu.id=4;
++------+------+-------+------------+
+ | sn | name | score | 课程名 | 
++------+------+-------+------------+ 
+| 31 | 许仙 | 67 | Java |
+| 31 | 许仙 | 23 | 计算机原理 |
+| 31 | 许仙 | 56 | 高阶数学 |
+| 31 | 许仙 | 72 | 英文 | 
++------+------+-------+------------+ 
+4 rows in set (0.00 sec)
